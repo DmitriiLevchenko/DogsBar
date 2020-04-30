@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activitys.MainActivity"
+    android:background="@drawable/background_1">
+
+
+    <Button
+        android:id="@+id/rule"
+        android:layout_width="188dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="244dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button"
+        android:text="Rules"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="188dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="244dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button"
+        android:text="Start"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/rule"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="188dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="244dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button"
+        android:text="Exit"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
