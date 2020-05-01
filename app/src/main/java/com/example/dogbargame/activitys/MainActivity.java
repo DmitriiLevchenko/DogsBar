@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void CreateRuletIntent() {
-
+     startActivity(new Intent(MainActivity.this,Rule.class));
     }
 
 

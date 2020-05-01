@@ -12,6 +12,9 @@ import android.view.SurfaceView;
 import com.example.dogbargame.R;
 import com.example.dogbargame.activitys.GameStarter;
 import com.example.dogbargame.activitys.MainActivity;
+import com.example.dogbargame.util.ChangeImage;
+import com.example.dogbargame.util.IngradientType;
+import com.example.dogbargame.util.Win;
 
 import java.util.ArrayList;
 import java.util.logging.Handler;
@@ -23,19 +26,23 @@ public class GameViewEvading extends SurfaceView implements Runnable {
     public static float unitW = 0;
     public static float unitH = 0;
     private boolean firstTime = true;
-    private boolean gameRunning = true;
+    public static  boolean gameRunning = true,gamewin = false;
     private Thread gameThread = null;
     private Paint paint;
     private Canvas canvas;
     private Context context;
+    private ChangeImage changeImage;
     public static SurfaceHolder surfaceHolder;
     private ArrayList<Dishes> dishes = new ArrayList<>();
     private Bitmap bitmap;
-    private  int CREATEDISHTIME = 50;
+    private  int CREATEDISHTIME = 31;
     private int currentTime = 0;
+    private Win win;
 
-    public GameViewEvading(Context context) {
+    public GameViewEvading(Context context, ChangeImage changeImage, Win win) {
         super(context);
+        this.win = win;
+        this.changeImage = changeImage;
         surfaceHolder = getHolder();
         paint = new Paint();
         this.context = context;
@@ -51,6 +58,7 @@ public class GameViewEvading extends SurfaceView implements Runnable {
             control();
             checkIfNewDish();
             checktouch();
+            checkgamestatus();
         }
     }
     private void draw() {
@@ -96,7 +104,7 @@ public class GameViewEvading extends SurfaceView implements Runnable {
 
     private void control() {
         try {
-            gameThread.sleep(20);
+            gameThread.sleep(15);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -108,20 +116,46 @@ public class GameViewEvading extends SurfaceView implements Runnable {
         {
             GameStarter.checkOnclickListener = false;
             for (Dishes dishe : dishes) {
-                if(dishe.checkcolision(GameStarter.X,GameStarter.Y))
+                if(dishe.checkcolision(GameStarter.X))
                 {
-                    removeDishes.add(dishe);
-                }
+                    boolean istruetouch = false;
+                    int indexi = 0;
+                    for(IngradientType ingradientType: GameStarter.ingradientarray)
+                    {
+                        if(dishe.dishesEnum == ingradientType.getIngradientType() && !ingradientType.isUses())
+                        {
+                            istruetouch = true;
+                            ingradientType.setUses(true);
+                            GameStarter.quantatyofingradiens++;
+                            removeDishes.add(dishe);
+                            changeImage.ChangeImage(indexi);
+                            Log.d(MainActivity.LOGNAME,"REMOVE" + GameStarter.quantatyofingradiens);
+                            break;
+                        }
+                        indexi++;
+                    }
+                    if(!istruetouch)
+                    {
+                        GameViewEvading.gameRunning = false;
 
+                    }
+
+                }
             }
             for (Dishes dishe : removeDishes) {
-                if(dishe.checkcolision(GameStarter.X,GameStarter.Y))
-                {
                     dishes.remove(dishe);
-                }
-
             }
             removeDishes.clear();
+        }
+    }
+    private void checkgamestatus()
+    {
+        if(GameStarter.quantatyofingradiens >= 4)
+        {
+            gameRunning = false;
+            win.showDialogWin();
+            gamewin = true;
+            //Log.d(MainActivity.LOGNAME,"WINNNNNNNNN" + GameStarter.quantatyofingradiens);
         }
     }
 

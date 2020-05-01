@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.util.Log;
 
 import com.example.dogbargame.R;
+import com.example.dogbargame.activitys.GameStarter;
 import com.example.dogbargame.activitys.MainActivity;
 import com.example.dogbargame.util.DishesConverter;
 import com.example.dogbargame.util.DishesEnum;
@@ -15,6 +16,7 @@ import com.example.dogbargame.util.DishesEnum;
 import java.util.Random;
 
 public class Dishes {
+    public static boolean ishelper = false;
     protected float x; // координаты
     protected float y;
     protected float size; // размер
@@ -22,7 +24,8 @@ public class Dishes {
     protected int bitmapId; // id картинки
     protected Bitmap bitmap; // картинка
     private int radius = 2; // радиус
-    private float Speed = (float) 0.15; // максимальная скорость
+    public DishesEnum dishesEnum;
+    private float Speed = (float) 0.25; // максимальная скорость
 
     void init(Context context) { // сжимаем картинку до нужных размеров
         Bitmap cBitmap = BitmapFactory.decodeResource(context.getResources(), bitmapId);
@@ -36,12 +39,27 @@ public class Dishes {
     }
 
     public Dishes(Context context) {
-        int pick = new Random().nextInt(DishesEnum.values().length);
-        DishesConverter dishesConverter = new DishesConverter();
-        bitmapId = dishesConverter.getImagerecurceid(DishesEnum.values()[pick]);
+        if(ishelper)
+        {
+            int pick = new Random().nextInt(DishesEnum.values().length);
+            DishesConverter dishesConverter = new DishesConverter();
+            bitmapId = dishesConverter.getImagerecurceid(DishesEnum.values()[pick]);
+            dishesEnum = DishesEnum.values()[pick];
+            ishelper = false;
+        }
+        else
+        {
+            DishesConverter dishesConverter = new DishesConverter();
+            ishelper = true;
+            int pick = new Random().nextInt(GameStarter.ingradientarray.size());
+            dishesEnum = GameStarter.ingradientarray.get(pick).getIngradientType();
+            bitmapId = dishesConverter.getImagerecurceid( GameStarter.ingradientarray.get(pick).getIngradientType());
+        }
+
+
         y = 1;
-        x = GameViewEvading.maxX - radius;
-        Log.d(MainActivity.LOGNAME, "x = " + x);
+        x = GameViewEvading.maxX - radius*2;
+       // Log.d(MainActivity.LOGNAME, "x = " + x);
         size = radius * 2;
         speed = Speed;
         init(context);
@@ -57,19 +75,17 @@ public class Dishes {
         else return false;
     }
 
-    public boolean checkcolision(float x, float y) {
+    public boolean checkcolision(float x) {
         x = x / GameViewEvading.unitW;
-        y = y / GameViewEvading.unitH;
         int GameStarX = (int) this.x;
         int GameStarY = (int) this.y;
-        int GameStarR = this.radius;
+        int GameStarR = this.radius*2;
         int maxX = GameStarX + GameStarR;
         int minX = GameStarX - GameStarR;
-        int maxY = GameStarY + GameStarR;
-        int minY = GameStarY - GameStarR;
         if (x < maxX && x > minX) {
             return true;
         }
         return false;
     }
+
 }

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DogBarGame</string>
+    <string name="dialog_fire_missiles">ХАЙЙ</string>
+    <string name="fire">fire</string>
+    <string name="cancel">cancel</string>
+    <string name="dialog_about_title_gameover">Game Over</string>
+    <string name="dialog_about_message_gameover">Ok,lets try again?</string>
+    <string name="dialog_about_title_win">Nice!!!</string>
+    <string name="dialog_about_message_win">Next level?</string>
 </resources>
